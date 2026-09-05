@@ -37,3 +37,6 @@ python blockchain.py
 ## 8. Language used
 
 Python: It requires Python 3.6 or later.
+
+# ZDR-001 Submission 
+This task is done and submited by @only1angelnath for the Task 1 of Zcash Developer Residency Program 2026
