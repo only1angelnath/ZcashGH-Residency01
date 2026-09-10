@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zcash Architecture & Address Guide</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <h1>Zcash Architecture & Address Guide</h1>
+      <p class="subtitle">An interactive beginner-friendly guide to the Zcash ecosystem</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Navigation -->
+    <nav class="nav">
+      <a href="#timeline">Timeline</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#nodes">Full Nodes</a>
+      <a href="#address">Address Identifier</a>
+      <a href="#resources">Resources</a>
+    </nav>
+
+    <!-- 1. Origins Timeline -->
+    <section id="timeline" class="section">
+      <h2>1. Zcash Origins Timeline</h2>
+      <p class="section-desc">Key milestones that led to Zcash and its privacy technology.</p>
+
+      <div class="timeline">
+        <div class="timeline-item" data-year="2013">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="year">2013</span>
+            <h3>Zerocoin Research Paper</h3>
+            <p>Matthew Green, Ian Miers and Christina Garman (Johns Hopkins) publish the Zerocoin protocol — a proposal to add strong privacy to Bitcoin using zero-knowledge proofs.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-year="2014">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="year">2014</span>
+            <h3>Zerocash Research Paper</h3>
+            <p>The Zerocash paper (Ben-Sasson, Chiesa, Garman, Green, Miers, Tromer, Virza) introduces zk-SNARKs that hide sender, receiver <strong>and</strong> amount, forming the cryptographic foundation of Zcash.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-year="2016">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="year">Oct 2016</span>
+            <h3>Launch of Zcash</h3>
+            <p>Zcash mainnet launches (Sprout era) under the leadership of Zooko Wilcox and the Electric Coin Company. The first shielded pool goes live after a multi-party trusted setup ceremony.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-year="2018">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="year">Oct 2018</span>
+            <h3>Sapling Upgrade</h3>
+            <p>Sapling activates. Shielded transactions become dramatically faster and more efficient. New address format begins with <code>zs</code>. This is a major usability leap for private payments.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-year="2022">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="year">May 2022</span>
+            <h3>Orchard & Unified Addresses (NU5)</h3>
+            <p>Network Upgrade 5 introduces the Orchard shielded pool (using Halo 2 proofs — no new trusted setup) and Unified Addresses that can contain multiple receiver types in one string.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item" data-year="2025-2026">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="year">2025–2026</span>
+            <h3>Modern Full-Node Era</h3>
+            <p>zcashd is retired. Zebra (Zcash Foundation) becomes the primary reference full node. Zakura (a high-performance fork of Zebra) appears, focused on speed, pruning and future scalability.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Network Architecture -->
+    <section id="architecture" class="section">
+      <h2>2. Zcash Network Architecture</h2>
+      <p class="section-desc">How information flows from the blockchain to your wallet.</p>
+
+      <div class="architecture-flow">
+        <div class="arch-box">
+          <div class="arch-icon">🖥️</div>
+          <h3>Full Node</h3>
+          <p>Zebra or Zakura</p>
+          <ul>
+            <li>Validates every block & transaction</li>
+            <li>Holds the complete chain</li>
+            <li>Enforces consensus rules</li>
+          </ul>
+        </div>
+
+        <div class="arch-arrow">→</div>
+
+        <div class="arch-box">
+          <div class="arch-icon">📡</div>
+          <h3>Light Client / Indexer</h3>
+          <p>lightwalletd or Zaino</p>
+          <ul>
+            <li>Extracts compact block data</li>
+            <li>Serves only what wallets need</li>
+            <li>Reduces bandwidth & storage</li>
+          </ul>
+        </div>
+
+        <div class="arch-arrow">→</div>
+
+        <div class="arch-box">
+          <div class="arch-icon">📱</div>
+          <h3>Wallet / Application</h3>
+          <p>Zashi, YWallet, etc.</p>
+          <ul>
+            <li>Scans for user notes</li>
+            <li>Creates & signs transactions</li>
+            <li>Shows balances privately</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="arch-explanation">
+        <h3>How the flow works</h3>
+        <ol>
+          <li><strong>Full nodes</strong> download and independently verify the entire Zcash blockchain. They are the source of truth.</li>
+          <li>A <strong>light-client service</strong> (indexer) connects to one or more full nodes, filters the data into a compact format, and exposes a simple API.</li>
+          <li><strong>Wallets</strong> connect to the light-client service. They download only the compact data needed to detect incoming payments and build new transactions — without running a full node themselves.</li>
+        </ol>
+        <p class="note">This architecture lets ordinary users enjoy strong privacy on mobile phones while still relying on the security of the full network.</p>
+      </div>
+    </section>
+
+    <!-- 3. Full-Node Comparison -->
+    <section id="nodes" class="section">
+      <h2>3. Full-Node Comparison</h2>
+      <p class="section-desc">Zebra (Zcash Foundation) and Zakura (performance-focused fork). Note: the task mentioned “Sakura” — the actual project name is <strong>Zakura</strong>.</p>
+
+      <div class="comparison-table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Zebra</th>
+              <th>Zakura</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Purpose</strong></td>
+              <td>Independent, rigorously reviewed reference full-node implementation maintained by the Zcash Foundation.</td>
+              <td>High-performance consensus-compatible full node (forked from Zebra) focused on speed, pruning and future scale.</td>
+            </tr>
+            <tr>
+              <td><strong>Basic Requirements</strong></td>
+              <td>Modern multi-core CPU, several GB of RAM, significant disk space for a full archival node.</td>
+              <td>Can run with lower resources, especially when using pruning or snapshots.</td>
+            </tr>
+            <tr>
+              <td><strong>Storage Options</strong></td>
+              <td>Primarily archival (full history). Large disk footprint (hundreds of GB).</td>
+              <td>Native pruning + published snapshots. Can run with ~10–15 GB in pruned mode.</td>
+            </tr>
+            <tr>
+              <td><strong>Benefits of Running a Full Node</strong></td>
+              <td colspan="2">
+                <ul class="benefits-list">
+                  <li>Independently verify every transaction and block (no need to trust third parties)</li>
+                  <li>Help decentralise and secure the network</li>
+                  <li>Can serve light-client indexers</li>
+                  <li>Maximum privacy and sovereignty</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. Address Identifier -->
+    <section id="address" class="section">
+      <h2>4. Zcash Address Identifier</h2>
+      <p class="section-desc">Paste any Zcash address below. The tool only identifies the format — it never asks for private keys, seeds or spending keys.</p>
+
+      <div class="address-tool">
+        <label for="addressInput">Enter a Zcash address</label>
+        <input
+          type="text"
+          id="addressInput"
+          placeholder="e.g. t1..., zs1..., u1..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="identifyBtn">Identify Address</button>
+
+        <div id="result" class="result hidden">
+          <div class="result-type" id="resultType"></div>
+          <div class="result-privacy" id="resultPrivacy"></div>
+        </div>
+
+        <div id="error" class="error hidden"></div>
+      </div>
+
+      <div class="address-legend">
+        <h3>Quick Reference</h3>
+        <ul>
+          <li><code>t1</code> / <code>t3</code> → Transparent address</li>
+          <li><code>zs</code> → Sapling shielded address</li>
+          <li><code>u1</code> / <code>u</code> → Unified Address</li>
+          <li>Anything else → Unknown / unsupported</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. Learning Resources -->
+    <section id="resources" class="section">
+      <h2>5. Learning Resources</h2>
+      <p class="section-desc">Official and reliable places to continue learning about Zcash.</p>
+
+      <div class="resources-grid">
+        <a href="https://zechub.wiki/" target="_blank" rel="noopener" class="resource-card">
+          <h3>ZecHub</h3>
+          <p>Community-driven educational wiki covering almost every aspect of Zcash.</p>
+        </a>
+        <a href="https://zips.z.cash/" target="_blank" rel="noopener" class="resource-card">
+          <h3>Zcash Improvement Proposals (ZIPs)</h3>
+          <p>The official specifications for protocol changes and new features.</p>
+        </a>
+        <a href="https://zcash.readthedocs.io/" target="_blank" rel="noopener" class="resource-card">
+          <h3>Zcash Documentation</h3>
+          <p>Protocol documentation and developer references.</p>
+        </a>
+        <a href="https://zebra.zfnd.org/" target="_blank" rel="noopener" class="resource-card">
+          <h3>Zebra Book</h3>
+          <p>Official documentation for the Zebra full node.</p>
+        </a>
+        <a href="https://discord.gg/zcash" target="_blank" rel="noopener" class="resource-card">
+          <h3>Zcash Community Discord</h3>
+          <p>Active community channels for questions and discussion.</p>
+        </a>
+        <a href="https://electriccoin.co/" target="_blank" rel="noopener" class="resource-card">
+          <h3>Electric Coin Company</h3>
+          <p>Company that originally developed Zcash and continues important work.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Built for the Zcash Privacy Developers Residency — Task 02</p>
+      <p>By Adediran Nathaniel (@only1angelnath)</p>
+      <p class="disclaimer">This is an educational tool only. Never enter private keys, seed phrases or spending keys into any website.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
